@@ -1,6 +1,6 @@
 from pyrogram import Client, Filters
 
-from srever_pyrogram_client.src.lib.config import ClientConfig
+from serever_pyrogram_client.src.extend.config import ClientConfig
 
 
 def register(config: ClientConfig) -> Client:

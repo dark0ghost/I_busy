@@ -12,4 +12,6 @@ RUN pip3 install -r requirements.txt
 
 COPY . .
 
+RUN python src/main.py
+
 RUN echo "complete"
