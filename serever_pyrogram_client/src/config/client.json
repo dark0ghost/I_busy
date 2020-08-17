@@ -1,3 +1,7 @@
 {
-  "token": ""
+  "App api_id" : "",
+  "App api_hash":"",
+  "Test configuration":"",
+  "Production configuration": "",
+  "name": ""
 }

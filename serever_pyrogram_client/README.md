@@ -13,3 +13,4 @@
 |ujson|3.1.0|
 |aiofiles|0.5.0|
 |tgcrypto|1.2.1|
+|aiohttp_jinja2|1.2.0|

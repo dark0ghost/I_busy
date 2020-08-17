@@ -1,6 +1,6 @@
+import aiohttp_jinja2
 from aiohttp import web
 from pyrogram import Client
-
 
 
 class WebServer:
@@ -9,15 +9,19 @@ class WebServer:
     def __init__(self, app: Client = 1):
         self.app = app
 
-    @staticmethod
-    async def start_hendler(request):
-        return web.Response(text="Hello, world")
+    @aiohttp_jinja2.template('main.html')
+    async def start_hendler(self, request):
+        return
+
+    async def api_doc_get(self):
+        return web.Response(text="api doc get")
+
+    async def api_doc_post(self):
+        return web.Response(text="api doc post")
 
     async def api_start_user_client(self, request):
-
-        print(request.match_info.get("login")
-              )
-        return web.Response(text= str(await request.post()))
+        print(dir(request))
+        return web.Response(text="api/")
 
     async def api_stop_user_client(self, request):
         pass
