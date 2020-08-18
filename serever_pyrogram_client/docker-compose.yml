@@ -10,3 +10,23 @@ services:
        on-failure
     volumes:
         - ".:/usr/src/app"
+  database:
+    image:
+      postgres
+    volumes:
+      - "./postgres/data:/var/lib/postgresql/data/pgdata"
+    environment:
+        POSTGRES_USER: eventstracker
+        POSTGRES_PASSWORD: A3dSA24Dctf2v4HE
+    restart:
+        always
+    ports:
+        - 5432:5432
+    container_name: postgres
+  adminer:
+    image:
+      adminer
+    restart:
+      always
+    ports:
+      - 8080:8080
