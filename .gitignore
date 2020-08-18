@@ -21,7 +21,7 @@ __pycache__/
 
 # C extensions
 *.so
-
+*.test
 # Distribution / packaging
 .Python
 build/
@@ -154,4 +154,7 @@ dmypy.json
 cython_debug/
 
 .idea/
+serever_pyrogram_client/.idea/
+serever_pyrogram_client/src/config/conf.test_conf
+*.test_conf
 
