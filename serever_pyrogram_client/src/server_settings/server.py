@@ -9,7 +9,6 @@ from aiologger.loggers.json import JsonLogger
 from pyrogram import Client
 
 
-
 class WebServer:
     app: Client
 
@@ -29,13 +28,12 @@ class WebServer:
 
     @staticmethod
     @aiohttp_jinja2.template('doc_api.html')
-    async def api_doc(request) -> web.Response:
+    async def api_doc(request: aiohttp.web.Request) -> web.Response:
         return web.Response(text="api doc get")
 
     async def api_start_user_client(self, request: aiohttp.web.Request) -> web.Response:
         print(await request.text())
         if login := request.query.get("login") is not None:
-
             return web.json_response(data={
                 "status": "ok"
             })
