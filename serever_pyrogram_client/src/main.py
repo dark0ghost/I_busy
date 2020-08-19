@@ -6,6 +6,7 @@ import uvloop
 from aiohttp import web
 from tortoise import Tortoise
 from src.extend.config import ClientConfig, ServerConfig, set_config, DataBaseConfig
+from src.extend.exception import DataBaseConnectionRefused
 from src.telegram_client_settings.client import register
 from src.server_settings.server import WebServer
 
@@ -15,8 +16,8 @@ class App:
     client_config: ClientConfig
     database_config: DataBaseConfig
 
-    def __init__(self, loop: asyncio.AbstractEventLoop):
-        loop.run_until_complete(self.read_config())
+    def __init__(self, asyncio_loop: asyncio.AbstractEventLoop):
+        asyncio_loop.run_until_complete(self.read_config())
 
     async def read_config(self) -> None:
         self.server_config, self.client_config, self.database_config = await set_config()
@@ -24,9 +25,17 @@ class App:
     async def main(self) -> web.Application:
         # app_client: Client = client.register(config=client_config.token)
         # server = WebServer(app=app_client)
-        await Tortoise.init(
+        db_url = f"postgres://{self.database_config.postgres_user}:{self.database_config.postgres_password}@{self.database_config.host}:{self.database_config.port}"
+        print(
+            f"postgres://{self.database_config.postgres_user}:{self.database_config.postgres_password}@{self.database_config.host}:{self.database_config.port}")
+        try:
+            await Tortoise.init(
+                db_url=db_url,
+                modules={'models': ['app.models']}
 
-        )
+            )
+        except ConnectionRefusedError as e:
+            raise DataBaseConnectionRefused(f"field connect database:{db_url}  -> {e}")
         server = WebServer()
         web_app = web.Application()
         web_app.add_routes([web.get('/', server.start_hendler)])
@@ -45,5 +54,5 @@ class App:
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
     uvloop.install()
-    app = App(loop=loop)
+    app = App(asyncio_loop=loop)
     web.run_app(app.main(), host=app.server_config.host, port=app.server_config.port)
