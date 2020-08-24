@@ -12,6 +12,7 @@ class ServerConfig:
     host: str
     port: int
     path_to_html: str
+    support_ssl: bool
 
 
 @dataclass(init=True, repr=True)
@@ -66,6 +67,7 @@ async def set_config() -> (ServerConfig, ClientConfig, DataBaseConfig):
     database_config: Dict[str, Any] = json.loads(await read_database_config())
     port: Optional[int] = server_config.get("port")
     host: Optional[str] = server_config.get("host")
+    support_ssl: Optional[bool] = server_config.get("support ssl")
     path_to_html: Optional[str] = server_config.get("path to html")
     name: Optional[str] = client_config.get("name")
     app_api_id: Optional[str] = client_config.get("App api_id")
@@ -76,8 +78,7 @@ async def set_config() -> (ServerConfig, ClientConfig, DataBaseConfig):
     host_database: Optional[str] = database_config.get("host")
     postgres_user: Optional[str] = database_config.get("POSTGRES_USER")
     postgres_password: Optional[str] = database_config.get("POSTGRES_PASSWORD")
-
-    return ServerConfig(host=host, port=port, path_to_html=path_to_html), \
+    return ServerConfig(host=host, port=port, path_to_html=path_to_html,support_ssl=support_ssl), \
            ClientConfig(name=name, app_api_id=app_api_id,
                         app_api_hash=app_api_hash,
                         test_configuration=test_configuration,

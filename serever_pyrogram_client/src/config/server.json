@@ -1,5 +1,6 @@
 {
-  "host": "127.1.1.1",
-  "port": "8080",
-  "path to html": "server_settings/html/"
+  "host": "0.0.0.0",
+  "port": "4321",
+  "path to html": "server_settings/html/",
+  "support ssl": false
 }

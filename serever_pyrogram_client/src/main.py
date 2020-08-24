@@ -26,14 +26,14 @@ class App:
         # app_client: Client = client.register(config=client_config.token)
         # server = WebServer(app=app_client)
         db_url = f"postgres://{self.database_config.postgres_user}:{self.database_config.postgres_password}@{self.database_config.host}:{self.database_config.port}"
-        print(
-            f"postgres://{self.database_config.postgres_user}:{self.database_config.postgres_password}@{self.database_config.host}:{self.database_config.port}")
+        print(db_url)
         try:
             await Tortoise.init(
                 db_url=db_url,
                 modules={'models': ['app.models']}
 
             )
+            await Tortoise.generate_schemas()
         except ConnectionRefusedError as e:
             raise DataBaseConnectionRefused(f"field connect database:{db_url}  -> {e}")
         server = WebServer()
