@@ -30,8 +30,7 @@ class App:
         try:
             await Tortoise.init(
                 db_url=db_url,
-                modules={'models': ['app.models']}
-
+                modules={'models': ['table.User']}
             )
             await Tortoise.generate_schemas()
         except ConnectionRefusedError as e:
@@ -42,7 +41,6 @@ class App:
         web_app.add_routes(
             [
                 web.get("/api/start/", server.api_start_user_client),
-                web.get("/api/stop/", server.api_stop_user_client),
                 web.route("*", "/api/", server.api_doc),
             ]
         )
@@ -56,3 +54,4 @@ if __name__ == '__main__':
     uvloop.install()
     app = App(asyncio_loop=loop)
     web.run_app(app.main(), host=app.server_config.host, port=app.server_config.port)
+    loop.run_until_complete(Tortoise.close_connections())
