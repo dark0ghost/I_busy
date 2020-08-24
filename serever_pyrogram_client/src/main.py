@@ -26,14 +26,13 @@ class App:
         # app_client: Client = client.register(config=client_config.token)
         # server = WebServer(app=app_client)
         db_url = f"postgres://{self.database_config.postgres_user}:{self.database_config.postgres_password}@{self.database_config.host}:{self.database_config.port}"
-        print(
-            f"postgres://{self.database_config.postgres_user}:{self.database_config.postgres_password}@{self.database_config.host}:{self.database_config.port}")
+        print(db_url)
         try:
             await Tortoise.init(
                 db_url=db_url,
-                modules={'models': ['app.models']}
-
+                modules={'models': ['table.User']}
             )
+            await Tortoise.generate_schemas()
         except ConnectionRefusedError as e:
             raise DataBaseConnectionRefused(f"field connect database:{db_url}  -> {e}")
         server = WebServer()
@@ -42,7 +41,6 @@ class App:
         web_app.add_routes(
             [
                 web.get("/api/start/", server.api_start_user_client),
-                web.get("/api/stop/", server.api_stop_user_client),
                 web.route("*", "/api/", server.api_doc),
             ]
         )
@@ -56,3 +54,4 @@ if __name__ == '__main__':
     uvloop.install()
     app = App(asyncio_loop=loop)
     web.run_app(app.main(), host=app.server_config.host, port=app.server_config.port)
+    loop.run_until_complete(Tortoise.close_connections())

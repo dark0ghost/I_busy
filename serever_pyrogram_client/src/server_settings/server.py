@@ -1,24 +1,28 @@
-from typing import Dict
-
+import subprocess
 import aiohttp
 import aiohttp_jinja2
 
 from aiohttp import web
 from aiologger import Logger
 from aiologger.loggers.json import JsonLogger
+from typing import Dict
 from pyrogram import Client
+from src.table.User import User
 
 
 class WebServer:
     app: Client
+    status_call_client: bool
+    process_id: subprocess.Popen
 
     def __init__(self, app: Client = 1):
         self.app = app
         self.logger: Logger = JsonLogger.with_default_handlers(name="log/server.log")
+        self.status_call_client = False
 
     @staticmethod
     @aiohttp_jinja2.template('main.html')
-    async def start_hendler(request) -> Dict:
+    async def start_hendler(request: aiohttp.web.Request) -> Dict:
         """
         main derectory ("/")
         """
@@ -29,11 +33,14 @@ class WebServer:
     @staticmethod
     @aiohttp_jinja2.template('doc_api.html')
     async def api_doc(request: aiohttp.web.Request) -> web.Response:
+        """
+        out html file with doc service
+        """
         return web.Response(text="api doc get")
 
     async def api_start_user_client(self, request: aiohttp.web.Request) -> web.Response:
-        print(await request.text())
         if login := request.query.get("login") is not None:
+
             return web.json_response(data={
                 "status": "ok"
             })
@@ -43,6 +50,3 @@ class WebServer:
             "status": "bad",
             "cause": "parameter not specified"
         })
-
-    async def api_stop_user_client(self, request):
-        pass
