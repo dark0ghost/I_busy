@@ -1,3 +1,2 @@
-
 class DataBaseConnectionRefused(Exception):
     pass
