@@ -1,13 +1,13 @@
 import asyncio
+
 import aiohttp_jinja2
 import jinja2
 import uvloop
-
 from aiohttp import web
 from tortoise import Tortoise
+
 from src.extend.config import ClientConfig, ServerConfig, set_config, DataBaseConfig
 from src.extend.exception import DataBaseConnectionRefused
-from src.telegram_client_settings.client import register
 from src.server_settings.server import WebServer
 
 
@@ -15,32 +15,25 @@ class App:
     server_config: ServerConfig
     client_config: ClientConfig
     database_config: DataBaseConfig
+    asyncio_loop:  asyncio.AbstractEventLoop
 
     def __init__(self, asyncio_loop: asyncio.AbstractEventLoop):
         asyncio_loop.run_until_complete(self.read_config())
+        self.asyncio_loop = asyncio_loop
 
     async def read_config(self) -> None:
         self.server_config, self.client_config, self.database_config = await set_config()
 
-    async def main(self) -> web.Application:
-        # app_client: Client = client.register(config=client_config.token)
-        # server = WebServer(app=app_client)
-        db_url = f"postgres://{self.database_config.postgres_user}:{self.database_config.postgres_password}@{self.database_config.host}:{self.database_config.port}"
-        print(db_url)
-        try:
-            await Tortoise.init(
-                db_url=db_url,
-                modules={'models': ['table.User']}
-            )
-            await Tortoise.generate_schemas()
-        except ConnectionRefusedError as e:
-            raise DataBaseConnectionRefused(f"field connect database:{db_url}  -> {e}")
-        server = WebServer()
+    async def set_server(self) -> web.Application:
+        """
+        set server
+        """
+        server = WebServer(database_config=self.database_config)
         web_app = web.Application()
         web_app.add_routes([web.get('/', server.start_hendler)])
         web_app.add_routes(
             [
-                web.get("/api/start/", server.api_start_user_client),
+                web.get("/api/command/", server.api_start_user_client),
                 web.route("*", "/api/", server.api_doc),
             ]
         )
@@ -53,5 +46,7 @@ if __name__ == '__main__':
     loop = asyncio.get_event_loop()
     uvloop.install()
     app = App(asyncio_loop=loop)
-    web.run_app(app.main(), host=app.server_config.host, port=app.server_config.port)
-    loop.run_until_complete(Tortoise.close_connections())
+    try:
+        web.run_app(app=app.set_server(), host=app.server_config.host, port=app.server_config.port)
+    finally:
+        loop.run_until_complete(Tortoise.close_connections())

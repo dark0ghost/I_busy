@@ -13,6 +13,7 @@ class ServerConfig:
     port: int
     path_to_html: str
     support_ssl: bool
+    path_to_ssl: str
 
 
 @dataclass(init=True, repr=True)
@@ -69,6 +70,7 @@ async def set_config() -> (ServerConfig, ClientConfig, DataBaseConfig):
     host: Optional[str] = server_config.get("host")
     support_ssl: Optional[bool] = server_config.get("support ssl")
     path_to_html: Optional[str] = server_config.get("path to html")
+    path_to_ssl: Optional[str] = server_config.get("path to ssl")
     name: Optional[str] = client_config.get("name")
     app_api_id: Optional[str] = client_config.get("App api_id")
     app_api_hash: Optional[str] = client_config.get("App api_hash")
@@ -78,7 +80,8 @@ async def set_config() -> (ServerConfig, ClientConfig, DataBaseConfig):
     host_database: Optional[str] = database_config.get("host")
     postgres_user: Optional[str] = database_config.get("POSTGRES_USER")
     postgres_password: Optional[str] = database_config.get("POSTGRES_PASSWORD")
-    return ServerConfig(host=host, port=port, path_to_html=path_to_html,support_ssl=support_ssl), \
+    return ServerConfig(host=host, port=port, path_to_html=path_to_html, support_ssl=support_ssl,
+                        path_to_ssl=path_to_ssl), \
            ClientConfig(name=name, app_api_id=app_api_id,
                         app_api_hash=app_api_hash,
                         test_configuration=test_configuration,
