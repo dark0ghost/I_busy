@@ -1,32 +1,32 @@
 import asyncio
-import subprocess
+import os
 import aiohttp
 import aiohttp_jinja2
 
 from typing import Dict
-
-from tortoise import Tortoise
-
 from aiohttp import web
 from aiologger import Logger
 from aiologger.loggers.json import JsonLogger
-
-from src.extend.config import DataBaseConfig
+from tortoise import Tortoise
+from asyncio.subprocess import Process
+from src.extend.config import DataBaseConfig, ClientConfig
 from src.extend.exception import DataBaseConnectionRefused
 from src.table.User import User
 
 
 class WebServer:
     status_call_client: bool
-    process_id: subprocess.Popen
+    process_id: Process
     database_config: DataBaseConfig
+    client_config: ClientConfig
 
-    def __init__(self, database_config: DataBaseConfig) -> None:
+    def __init__(self, database_config: DataBaseConfig, client_config: ClientConfig) -> None:
         self.database_config = database_config
+        self.client_config = client_config
         self.logger: Logger = JsonLogger.with_default_handlers(name="log/server.log")
         self.status_call_client = False
 
-    async def create_connect_db(self):
+    async def create_connect_db(self) -> None:
         db_url = f"postgres://{self.database_config.postgres_user}:{self.database_config.postgres_password}@{self.database_config.host}:{self.database_config.port} "
         try:
             await Tortoise.init(
@@ -41,7 +41,7 @@ class WebServer:
             raise DataBaseConnectionRefused(f"field connect database:{db_url}  -> {e}")
 
     @staticmethod
-    async def generate_schemas():
+    async def generate_schemas() -> None:
         await Tortoise.generate_schemas()
 
     @staticmethod
@@ -67,10 +67,21 @@ class WebServer:
                 (command := request.query.get("command")) is not None):
             await self.create_connect_db()
             if await User.filter(login_key=login).all():
-                if command == "start":
-                    print()
+                if command == "start" and not self.status_call_client:
+                    self.status_call_client = True
+                    self.process_id = await asyncio.create_subprocess_shell(
+                        f"python {os.path.abspath(path='telegram_client_settings/client.py')}  {self.client_config.app_api_hash}  {self.client_config.app_api_id}",
+                    )
                 elif command == "stop":
-                    print()
+                    if self.status_call_client:
+                        # kill process
+                        self.process_id.kill()
+                        self.status_call_client = False
+                elif self.status_call_client:
+                    return web.json_response({
+                        "status": "bad",
+                        "cause": "process is active"
+                    })
                 else:
                     return web.json_response({
                         "status": "bad",
