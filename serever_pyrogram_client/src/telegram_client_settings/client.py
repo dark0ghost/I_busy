@@ -1,5 +1,6 @@
-from pyrogram import Client, Filters
+import sys
 
+from pyrogram import Client
 
 from src.extend.config import ClientConfig
 
@@ -12,3 +13,8 @@ def register(config: ClientConfig) -> Client:
         await message.reply_text("Hello {}".format(message.from_user.first_name))
 
     return app
+
+
+if __name__ == "__main__":
+    print(sys.argv)
+
