@@ -16,5 +16,7 @@ def register(config: ClientConfig) -> Client:
 
 
 if __name__ == "__main__":
-    print(sys.argv)
-
+    while True:
+        app_api_hash: str = sys.argv[1]
+        app_api_id: str = sys.argv[2]
+        print(f"{app_api_id}={app_api_hash}")
