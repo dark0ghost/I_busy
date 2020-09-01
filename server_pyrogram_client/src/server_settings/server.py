@@ -70,13 +70,27 @@ class WebServer:
                 if command == "start" and not self.status_call_client:
                     self.status_call_client = True
                     self.process_id = await asyncio.create_subprocess_shell(
-                        f"python {os.path.abspath(path='telegram_client_settings/client.py')}  {self.client_config.app_api_hash}  {self.client_config.app_api_id}",
+                        "$(which python)" + f" {os.path.abspath(path='telegram_client_settings/client.py')}  {self.client_config.app_api_hash}  {self.client_config.app_api_id}",
                     )
+                    return web.json_response(data={
+                        "status": "ok",
+                        "cause": "script start work"
+                    })
                 elif command == "stop":
                     if self.status_call_client:
                         # kill process
+                        print("kill process")
                         self.process_id.kill()
                         self.status_call_client = False
+                        return web.json_response(data={
+                            "status": "ok",
+                            "cause": f"process stop  {self.process_id.communicate()}"
+                        })
+                    return web.json_response({
+                        "status": "bad",
+                        "cause": "process is not active"
+                    })
+
                 elif self.status_call_client:
                     return web.json_response({
                         "status": "bad",
@@ -87,9 +101,7 @@ class WebServer:
                         "status": "bad",
                         "cause": "command not valid"
                     })
-            return web.json_response(data={
-                "status": "ok"
-            })
+
         await self.logger.warning(msg=f"user {request.transport.get_extra_info('peername')[0]} connect without param "
                                       "login")
         return web.json_response({
