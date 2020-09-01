@@ -2,11 +2,12 @@ import sys
 
 from pyrogram import Client
 
-from src.extend.config import ClientConfig
 
+def register(api_hash: str, api_id: str) -> Client:
+    """
 
-def register(config: ClientConfig) -> Client:
-    app = Client(config.name, api_id=config.app_api_id, api_hash=config.app_api_hash)
+    """
+    app = Client("project", api_id=api_id, api_hash=api_hash)
 
     @app.on_message()
     async def hello(client, message):

@@ -7,7 +7,7 @@ async-generator==1.10
 async-lru==1.0.1
 async-timeout==3.0.1
 asyncpg==0.21.0
-attrs==19.3.0
+attrs==20.1.0
 chardet==3.0.4
 idna==2.10
 iso8601==0.1.12
@@ -16,11 +16,11 @@ MarkupSafe==1.1.1
 multidict==4.7.6
 pyaes==1.6.1
 PyPika==0.38.0
-#Pyrogram===0.18.0-async
 PySocks==1.7.1
 TgCrypto==1.2.1
 tortoise-orm==0.16.14
-typing-extensions==3.7.4.2
+typing-extensions==3.7.4.3
 ujson==3.1.0
 uvloop==0.14.0
 yarl==1.5.1
+Pyrogram>=0.18.0-async
