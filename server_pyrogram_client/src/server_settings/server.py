@@ -45,16 +45,6 @@ class WebServer:
         await Tortoise.generate_schemas()
 
     @staticmethod
-    @aiohttp_jinja2.template('main.html')
-    async def start_hendler(request: aiohttp.web.Request) -> Dict:
-        """
-        main derectory ("/")
-        """
-        return {
-
-        }
-
-    @staticmethod
     @aiohttp_jinja2.template('doc_api.html')
     async def api_doc(request: aiohttp.web.Request) -> web.Response:
         """
@@ -78,7 +68,6 @@ class WebServer:
                     })
                 elif command == "stop":
                     if self.status_call_client:
-                        # kill process
                         print("kill process")
                         self.process_id.kill()
                         self.status_call_client = False
@@ -101,7 +90,6 @@ class WebServer:
                         "status": "bad",
                         "cause": "command not valid"
                     })
-
         await self.logger.warning(msg=f"user {request.transport.get_extra_info('peername')[0]} connect without param "
                                       "login")
         return web.json_response({

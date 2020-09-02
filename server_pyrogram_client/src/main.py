@@ -15,7 +15,7 @@ class App:
     client_config: ClientConfig
     database_config: DataBaseConfig
 
-    def __init__(self, asyncio_loop: asyncio.AbstractEventLoop):
+    def __init__(self, asyncio_loop: asyncio.AbstractEventLoop) -> None:
         asyncio_loop.run_until_complete(self.read_config())
 
     async def read_config(self) -> None:
@@ -26,8 +26,9 @@ class App:
         set server
         """
         server = WebServer(database_config=self.database_config, client_config=self.client_config)
+        if self.database_config.need_update:
+            await server.generate_schemas()
         web_app = web.Application()
-        web_app.add_routes([web.get('/', server.start_hendler)])
         web_app.add_routes(
             [
                 web.get("/api/command/", server.api_start_user_client),
