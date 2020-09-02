@@ -1,36 +1,11 @@
-import asyncio
-from dataclasses import dataclass
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Tuple
+from src.extend.config_dataclass.server_config import ServerConfig
+from src.extend.config_dataclass.client_config import ClientConfig
+from src.extend.config_dataclass.database_config import DataBaseConfig
 
 import ujson as json
 import os.path
 import aiofiles
-
-
-@dataclass(init=True, repr=True)
-class ServerConfig:
-    host: str
-    port: int
-    path_to_html: str
-    support_ssl: bool
-    path_to_ssl: str
-
-
-@dataclass(init=True, repr=True)
-class ClientConfig:
-    app_api_id: str
-    app_api_hash: str
-    name: str
-    test_configuration: str
-    product_configuration: str
-
-
-@dataclass(init=True, repr=True)
-class DataBaseConfig:
-    host: str
-    port: int
-    postgres_user: str
-    postgres_password: str
 
 
 async def read_client_config() -> str:
@@ -58,7 +33,7 @@ async def read_database_config() -> str:
         return await file.read()
 
 
-async def set_config() -> (ServerConfig, ClientConfig, DataBaseConfig):
+async def set_config() -> Tuple[ServerConfig, ClientConfig, DataBaseConfig]:
     """
     build config server and client and  package in data class
     Returns: (ServerConfig,ClientConfig)
@@ -76,15 +51,17 @@ async def set_config() -> (ServerConfig, ClientConfig, DataBaseConfig):
     app_api_hash: Optional[str] = client_config.get("App api_hash")
     test_configuration: Optional[str] = client_config.get("Test configuration")
     product_configuration: Optional[str] = client_config.get("Production configuration")
+    trigger: Optional[str] = client_config.get("trigger user name")
     port_database: Optional[int] = database_config.get("port")
     host_database: Optional[str] = database_config.get("host")
     postgres_user: Optional[str] = database_config.get("POSTGRES_USER")
     postgres_password: Optional[str] = database_config.get("POSTGRES_PASSWORD")
+    need_update: Optional[bool] = database_config.get("need Update")
     return ServerConfig(host=host, port=port, path_to_html=path_to_html, support_ssl=support_ssl,
                         path_to_ssl=path_to_ssl), \
            ClientConfig(name=name, app_api_id=app_api_id,
                         app_api_hash=app_api_hash,
                         test_configuration=test_configuration,
-                        product_configuration=product_configuration), \
+                        product_configuration=product_configuration, trigger_username=trigger), \
            DataBaseConfig(port=port_database, host=host_database, postgres_user=postgres_user,
-                          postgres_password=postgres_password)
+                          postgres_password=postgres_password, need_update=need_update)
