@@ -46,11 +46,13 @@ class WebServer:
 
     @staticmethod
     @aiohttp_jinja2.template('doc_api.html')
-    async def api_doc(request: aiohttp.web.Request) -> web.Response:
+    async def api_doc(request: aiohttp.web.Request) -> Dict:
         """
         out html file with doc service
         """
-        return web.Response(text="api doc get")
+        return {
+
+        }
 
     async def api_start_user_client(self, request: aiohttp.web.Request) -> web.Response:
         if ((login := request.query.get("login")) is not None) and (
@@ -60,7 +62,7 @@ class WebServer:
                 if command == "start" and not self.status_call_client:
                     self.status_call_client = True
                     self.process_id = await asyncio.create_subprocess_shell(
-                        "$(which python)" + f" {os.path.abspath(path='telegram_client_settings/client.py')}  {self.client_config.app_api_hash}  {self.client_config.app_api_id}",
+                        "$(which python)" + f" {os.path.abspath(path='telegram_client_settings/client.py')}  {self.client_config.app_api_hash}  {self.client_config.app_api_id} {self.client_config.trigger_username}",
                     )
                     return web.json_response(data={
                         "status": "ok",
@@ -68,18 +70,16 @@ class WebServer:
                     })
                 elif command == "stop":
                     if self.status_call_client:
-                        print("kill process")
                         self.process_id.kill()
                         self.status_call_client = False
                         return web.json_response(data={
                             "status": "ok",
-                            "cause": f"process stop  {self.process_id.communicate()}"
+                            "cause": "process stop"
                         })
                     return web.json_response({
                         "status": "bad",
                         "cause": "process is not active"
                     })
-
                 elif self.status_call_client:
                     return web.json_response({
                         "status": "bad",
