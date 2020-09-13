@@ -62,7 +62,7 @@ class WebServer:
                 if command == "start" and not self.status_call_client:
                     self.status_call_client = True
                     self.process_id = await asyncio.create_subprocess_shell(
-                        "$(which python)" + f" {os.path.abspath(path='telegram_client_settings/client.py')}  {self.client_config.app_api_hash}  {self.client_config.app_api_id} {self.client_config.trigger_username}",
+                        "$(which python)" + f" {os.path.abspath(path='telegram_client_settings/client.py')}  {self.client_config.app_api_hash}  {self.client_config.app_api_id} {self.client_config.trigger_username} {self.client_config.message_on_trigger}",
                     )
                     return web.json_response(data={
                         "status": "ok",

@@ -4,5 +4,6 @@
   "Test configuration":"",
   "Production configuration": "",
   "name": "",
-  "trigger user name": ""
+  "trigger user name": "",
+  "massage on trigger": ""
 }
