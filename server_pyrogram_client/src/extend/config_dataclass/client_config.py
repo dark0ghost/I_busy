@@ -9,3 +9,4 @@ class ClientConfig:
     test_configuration: str
     product_configuration: str
     trigger_username: str
+    message_on_trigger: str

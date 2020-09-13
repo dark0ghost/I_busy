@@ -51,6 +51,7 @@ async def set_config() -> Tuple[ServerConfig, ClientConfig, DataBaseConfig]:
     app_api_hash: Optional[str] = client_config.get("App api_hash")
     test_configuration: Optional[str] = client_config.get("Test configuration")
     product_configuration: Optional[str] = client_config.get("Production configuration")
+    message_on_trigger: Optional[str] = client_config.get("massage on trigger")
     trigger: Optional[str] = client_config.get("trigger user name")
     port_database: Optional[int] = database_config.get("port")
     host_database: Optional[str] = database_config.get("host")
@@ -62,6 +63,7 @@ async def set_config() -> Tuple[ServerConfig, ClientConfig, DataBaseConfig]:
            ClientConfig(name=name, app_api_id=app_api_id,
                         app_api_hash=app_api_hash,
                         test_configuration=test_configuration,
-                        product_configuration=product_configuration, trigger_username=trigger), \
+                        product_configuration=product_configuration, trigger_username=trigger,
+                        message_on_trigger=message_on_trigger), \
            DataBaseConfig(port=port_database, host=host_database, postgres_user=postgres_user,
                           postgres_password=postgres_password, need_update=need_update)
