@@ -157,5 +157,15 @@ cython_debug/
 .idea/
 serever_pyrogram_client/.idea/
 serever_pyrogram_client/src/config/conf.test_conf
+serever_pyrogram_client/gradle/*
+server_pyrogram_client/ktor_server/gradle
+server_pyrogram_client/ktor_server/.gradle
+/.idea
+server_pyrogram_client/ktor_server//out
+server_pyrogram_client/ktor_server//build
+*.iml
+*.ipr
+*.iws
+
 *.test_conf
 
