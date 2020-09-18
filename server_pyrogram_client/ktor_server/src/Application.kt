@@ -1,5 +1,6 @@
 package com.openproject
 
+import com.openproject.config.ClientConfig
 import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.request.*
@@ -8,7 +9,8 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 
 //fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
-fun main(args: Array<String>): Unit {
+suspend fun main(args: Array<String>): Unit {
+    ClientConfig.loadDataFromJsonFile()
     embeddedServer(Netty, port = 8000) {
         routing {
             get("/") {

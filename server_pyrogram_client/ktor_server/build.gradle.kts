@@ -8,6 +8,7 @@ val logback_version: String by project
 plugins {
     application
     kotlin("jvm") version "1.4.0"
+    kotlin("plugin.serialization") version "1.4.0"
 }
 
 group = "com.openproject"
@@ -23,6 +24,10 @@ repositories {
 }
 
 dependencies {
+    implementation(kotlin("stdlib", org.jetbrains.kotlin.config.KotlinCompilerVersion.VERSION)) // or "stdlib-jdk8"
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0-RC") // JVM dependency
+    implementation(kotlin("gradle-plugin", version = kotlin_version))
+    implementation(kotlin("serialization", version = kotlin_version))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
     implementation("io.ktor:ktor-server-netty:$ktor_version")
