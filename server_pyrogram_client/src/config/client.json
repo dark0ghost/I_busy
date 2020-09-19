@@ -1,9 +1,9 @@
 {
-  "App api_id" : "12",
-  "App api_hash":"213",
-  "Test configuration":"",
-  "Production configuration": "",
+  "app_api_id" : "12",
+  "app_api_hash":"213",
+  "test_configuration":"",
+  "product_configuration": "",
   "name": "",
-  "trigger user name": "",
-  "massage on trigger": ""
+  "trigger_username": "",
+  "response_message_on_trigger": ""
 }

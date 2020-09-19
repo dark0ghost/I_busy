@@ -1,7 +1,7 @@
 {
   "host": "0.0.0.0",
   "port": "4321",
-  "path to html": "server_settings/html/",
-  "support ssl": false,
-  "path to ssl": ""
+  "path_to_html": "server_settings/html/",
+  "support_ssl": false,
+  "path_to_ssl": ""
 }

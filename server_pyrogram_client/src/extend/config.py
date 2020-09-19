@@ -33,6 +33,9 @@ async def read_database_config() -> str:
         return await file.read()
 
 
+
+
+
 async def set_config() -> Tuple[ServerConfig, ClientConfig, DataBaseConfig]:
     """
     build config server and client and  package in data class
@@ -43,21 +46,21 @@ async def set_config() -> Tuple[ServerConfig, ClientConfig, DataBaseConfig]:
     database_config: Dict[str, Any] = json.loads(await read_database_config())
     port: Optional[int] = server_config.get("port")
     host: Optional[str] = server_config.get("host")
-    support_ssl: Optional[bool] = server_config.get("support ssl")
-    path_to_html: Optional[str] = server_config.get("path to html")
-    path_to_ssl: Optional[str] = server_config.get("path to ssl")
+    support_ssl: Optional[bool] = server_config.get("support_ssl")
+    path_to_html: Optional[str] = server_config.get("path_to_html")
+    path_to_ssl: Optional[str] = server_config.get("path_to_ssl")
     name: Optional[str] = client_config.get("name")
-    app_api_id: Optional[str] = client_config.get("App api_id")
-    app_api_hash: Optional[str] = client_config.get("App api_hash")
-    test_configuration: Optional[str] = client_config.get("Test configuration")
-    product_configuration: Optional[str] = client_config.get("Production configuration")
-    message_on_trigger: Optional[str] = client_config.get("massage on trigger")
-    trigger: Optional[str] = client_config.get("trigger user name")
+    app_api_id: Optional[str] = client_config.get("app_api_id")
+    app_api_hash: Optional[str] = client_config.get("app_api_hash")
+    test_configuration: Optional[str] = client_config.get("test_configuration")
+    product_configuration: Optional[str] = client_config.get("product_configuration")
+    message_on_trigger: Optional[str] = client_config.get("response_message_on_trigger")
+    trigger: Optional[str] = client_config.get("trigger_username")
     port_database: Optional[int] = database_config.get("port")
     host_database: Optional[str] = database_config.get("host")
-    postgres_user: Optional[str] = database_config.get("POSTGRES_USER")
-    postgres_password: Optional[str] = database_config.get("POSTGRES_PASSWORD")
-    need_update: Optional[bool] = database_config.get("need Update")
+    postgres_user: Optional[str] = database_config.get("postgres_user")
+    postgres_password: Optional[str] = database_config.get("postgres_password")
+    need_update: Optional[bool] = database_config.get("need_update")
     return ServerConfig(host=host, port=port, path_to_html=path_to_html, support_ssl=support_ssl,
                         path_to_ssl=path_to_ssl), \
            ClientConfig(name=name, app_api_id=app_api_id,
