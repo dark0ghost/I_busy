@@ -1,7 +1,8 @@
 {
   "host": "localhost",
   "port": 5432,
-  "POSTGRES_USER":"tracker",
-  "POSTGRES_PASSWORD":"A3dSA24Dctf2v4HE",
-  "need Update": false
+  "postgres_user":"tracker",
+  "postgres_password":"A3dSA24Dctf2v4HE",
+  "need_update": false
 }
+

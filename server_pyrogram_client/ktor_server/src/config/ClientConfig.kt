@@ -1,39 +1,30 @@
 package com.openproject.config
 
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.encodeToJsonElement
-import java.io.FileInputStream
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
+import java.io.File
 
 
+@Serializable
 data class ClientConfig(
-  public val app_api_id: String,
-  public val app_api_hash: String,
-  public val name: String,
-  public val test_configuration: String,
-  public val product_configuration: String,
-  public val trigger_username: String,
-  public val message_on_trigger: String
+   val app_api_id: String,
+   val app_api_hash: String,
+   val name: String,
+   val test_configuration: String,
+   val product_configuration: String,
+   val trigger_username: String,
+   val response_message_on_trigger: String
 ) {
     companion object {
-        suspend fun loadDataFromJsonFile(path: String = "../src/config/client.json") {
-
-            val contents = withContext(Dispatchers.IO) {
-                FileInputStream(path).use {
-                    it.readBytes()
-                }
-
-            }
-            val json = Json.encodeToJsonElement(contents)
-            println(json)
-
-
+       fun loadDataFromJsonFile(path: String = "../src/config/client.json"): ClientConfig {
+            val contents = File(path).readText()
+            return Json.decodeFromString(string = contents)
         }
-
-
     }
 }
+
+
 
 
