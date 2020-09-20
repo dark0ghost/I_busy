@@ -9,7 +9,7 @@ import io.ktor.server.netty.*
 
 
 suspend fun main(args: Array<String>): Unit {
-    loadConfig()
+    println(loadConfig())
     embeddedServer(Netty, port = 8000) {
         routing {
             get("/") {
