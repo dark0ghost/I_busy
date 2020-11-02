@@ -1,6 +1,6 @@
-val ktor_version: String by project
-val kotlin_version: String by project
-val logback_version: String by project
+val ktor_version= "1.4.0"
+val kotlin_version= "1.4.0"
+val logback_version= "1.2.1"
 
 plugins {
     application
@@ -9,11 +9,9 @@ plugins {
 }
 
 group = "com.openproject"
-version = "0.0.1"
+version = "0.0.3"
 
-application {
-    mainClassName = "io.ktor.server.netty.EngineMain"
-}
+
 
 repositories {
     mavenLocal()
