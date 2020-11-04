@@ -1,6 +1,6 @@
 #include <SoftwareSerial.h>
 
-#define button 1
+#define button 2
 
 
 SoftwareSerial esp8266(4,5);
