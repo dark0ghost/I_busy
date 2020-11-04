@@ -1,4 +1,4 @@
-# project_x
+# project: "I busy"
 # what does this project do?
 this project allows you to assemble a system from a server and a client so that you can go away on business and enable the **"user is ofline"** (the system will answer everyone who wrote your **@username** anywhere)
 # server(telegram-client)
