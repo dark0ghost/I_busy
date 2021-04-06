@@ -11,7 +11,7 @@ attrs==20.1.0
 chardet==3.0.4
 idna==2.10
 iso8601==0.1.12
-Jinja2==2.11.2
+Jinja2==2.11.3
 MarkupSafe==1.1.1
 multidict==4.7.6
 pyaes==1.6.1
