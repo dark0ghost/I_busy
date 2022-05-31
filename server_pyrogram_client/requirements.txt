@@ -20,7 +20,7 @@ PySocks==1.7.1
 TgCrypto==1.2.1
 tortoise-orm==0.16.14
 typing-extensions==3.7.4.3
-ujson==3.1.0
+ujson==5.2.0
 uvloop==0.14.0
 yarl==1.5.1
 Pyrogram>=0.18.0-async
